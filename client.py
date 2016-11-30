@@ -27,7 +27,7 @@ def create_batch(moose):
         print(r.status_code)
         return -1
     parsed = json.loads(r)
-    return parsed['BatchID']
+    return parsed['batchID']
 
 def add_event(moose, eventtype, batchid, timestamp=int(time.time())):
     r = send_data({'Timestamp' : timestamp, 'Event' : eventtype, 'BatchID' : batchid}, 'alarm', moose)
