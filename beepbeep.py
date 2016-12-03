@@ -26,7 +26,7 @@ def create_batch(moose):
     if r.status_code != 200:
         print(r.status_code)
         return -1
-    parsed = json.loads(r)
+    parsed = json.loads(r.text)
     return parsed['batchID']
 
 def add_event(moose, eventtype, batchid, timestamp=int(time.time())):
@@ -34,8 +34,8 @@ def add_event(moose, eventtype, batchid, timestamp=int(time.time())):
     if r.status_code != 200:
         print(r.status_code)
         return -1
-    parsed = json.loads(r)
-    return parsed['EventID']
+    parsed = json.loads(r.text)
+    return parsed['eventID']
 
 def average(mcp, channel, n):
     x = 0
@@ -50,7 +50,7 @@ def detect_spike(mcp, channel, level):
     x = average(mcp, channel, AVERAGE_NUMBER)
     while x < level:
         x = average(mcp, channel, AVERAGE_NUMBER)
-    print("spike")
+    print("spike: " + str(x))
     ss = time.time()
     while x > level:
         x = average(mcp, channel, AVERAGE_NUMBER)
@@ -74,7 +74,7 @@ def detect_spike_timeout(mcp, channel, level, timeout):
         if time.time() - lst >= timeout:
             return -1
     ss = time.time()
-    print("spike")
+    print("spike: " + str(x))
     while x > level:
         x = average(mcp, channel, AVERAGE_NUMBER)
     return ss
