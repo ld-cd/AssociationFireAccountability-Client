@@ -23,7 +23,7 @@ def send_data(fish, call, moose):
 
 def create_batch(moose):
     r = send_data({}, 'batch', moose)
-    if r.status_code != 200:
+    if not (r.status_code  >= 200 and r.status_code <= 299):
         print(r.status_code)
         return -1
     parsed = json.loads(r.text)
@@ -31,11 +31,11 @@ def create_batch(moose):
 
 def add_event(moose, eventtype, batchid, timestamp=int(time.time())):
     r = send_data({'Timestamp' : timestamp, 'Event' : eventtype, 'BatchID' : batchid}, 'alarm', moose)
-    if r.status_code != 200:
+    if not (r.status_code >= 200 and r.status_code <= 299):
         print(r.status_code)
         return -1
     parsed = json.loads(r.text)
-    return parsed['eventID']
+    return parsed['alarmID']
 
 def average(mcp, channel, n):
     x = 0
@@ -96,4 +96,4 @@ if __name__ == "__main__":
             print(st)
             add_event(token, "loudbeep", batchmoose, timestamp = int(st))
         print("ALARM ENDING AT" + str(time.time()))
-        add_event(token, "end", batchmoose, timestamp = int(time.time())
+        add_event(token, "end", batchmoose, timestamp = int(time.time()))
