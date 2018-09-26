@@ -4,6 +4,7 @@ import time
 import json
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
+from pathlib import Path
 
 DS_DIFF = 2
 ALARM_END_TIMEOUT = 600 # ten minutes (all times in this file are in seconds fyi)
@@ -12,7 +13,8 @@ AVERAGE_NUMBER = 75
 #LIGHT_LEVEL = 1023
 # The light sensor isn't reliable enough at this point.
 
-token = '***REMOVED***'
+token_path = '/var/local/fire-alarm-monitor/apikey'
+token = Path(token_path).read_text().strip()
 server = 'http://associationfireaccountability.azurewebsites.net/api/hwmonitor/'
 #server = 'http://localhost/api/hwmonitor/'
 
